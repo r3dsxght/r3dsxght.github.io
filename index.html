@@ -4,50 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riven Endo Cal</title>
+    <link rel="stylesheet" type="text/css" href="style.css" /> 
     <script>
         function calculateResults() {
+            
+            
             // Get input values from the form
             var x = parseFloat(document.getElementById('inputX').value);
             var y = parseFloat(document.getElementById('inputY').value);
             var z = parseFloat(document.getElementById('inputZ').value);
 
             // Validate the value of x
-            if (x < 8 || x > 16 || isNaN(x)) {
-                // Display error message and prevent calculation
-                document.getElementById('errorMessage').textContent = "Error: Mastery Rank should be in between 8 and 16";
-                document.getElementById('firstResult').textContent = "";
-                document.getElementById('secondResult').textContent = "";
-                return;
-            }
-            if (y < 0 || y > 8 || isNaN(y)) {
-                // Display error message and prevent calculation
-                document.getElementById('errorMessage').textContent = "Error: Riven Mod Rank should be in between 0 and 8.";
-                document.getElementById('firstResult').textContent = "";
-                document.getElementById('secondResult').textContent = "";
-                return;
-            }
-            if (z < 0 | isNaN(z)) {
-                // Display error message and prevent calculation
-                document.getElementById('errorMessage').textContent = "Error: Reroll should be greater than or equal to 0";
-                document.getElementById('firstResult').textContent = "";
-                document.getElementById('secondResult').textContent = "";
-                return;
-            }
+            if (x < 8 || x > 16 || y<0 || y>8 ||  z<0 ){
+                if(x < 8 || x > 16 ){
+                    document.getElementById('firstResult').textContent = "Error";
+                    document.getElementById('secondResult').textContent = "Mastery Rank must be between 8 and 16";
+                }
+                if(y<0 || y>8 ){
+                    document.getElementById('firstResult').textContent = "Error";
+                    document.getElementById('secondResult').textContent = "Mod Rank must be between 0 and 8";
 
-            // Clear error message if valid input for x
-            document.getElementById('errorMessage').textContent = "";
+                }
+                if(z<0){
+                    document.getElementById('firstResult').textContent = "Error";
+                    document.getElementById('secondResult').textContent = "Reroll must be greater than 0";
+                    
 
-            // Calculate the first formula result
-            var firstResult = Math.floor(100 * (x - 8) + 22.5 * Math.pow(2, y) + 200 * z - 7);
+                }
+                
+            } else {
+                // Clear error message and calculate results
 
-            // Display the first result on the webpage
-            document.getElementById('firstResult').textContent = "Total Endo: " + firstResult;
+                // Calculate the first formula result
+                var firstResult = Math.floor(100 * (x - 8) + 22.5 * Math.pow(2, y) + 200 * z - 7);
 
-            // Calculate the second formula using the first result
-            var secondResult = Math.floor(firstResult / 345);
+                // Display the first result on the webpage
+                if(isNaN(firstResult)){
+                    document.getElementById('firstResult').textContent = " Fill all fields " ;
+                }
+                else{
+                    document.getElementById('firstResult').textContent = "Total Endo: " + firstResult;
+                }
 
-            // Display the second result on the webpage
-            document.getElementById('secondResult').textContent = "Maximum Plat: " + secondResult;
+                // Calculate the second formula using the first result
+                var secondResult = Math.floor(firstResult / 345);
+
+                // Display the second result on the webpage
+                if(isNaN(secondResult)){
+                    document.getElementById('secondResult').textContent = " (--_--)  ";
+                }
+                else{
+                    document.getElementById('secondResult').textContent = "Maximum Plat: " + secondResult;
+                }
+                
+            }    
         }
 
         // Add event listeners to input fields to trigger calculation on change
@@ -66,22 +76,24 @@
     </script>
 </head>
 <body>
-    <h1>Riven to Endo Calculator</h1>
-    <p><h2></h2></p>
-    
-    <form>
-        <label for="inputX">Mastery Rank:</label>
-        <input type="number" id="inputX" step="any" min="8" max="16" value="8"><br><br>
-
-        <label for="inputY">Riven Mod Rank:</label>
-        <input type="number" id="inputY" step="any" value="0"><br><br>
-
-        <label for="inputZ">Reroll: </label>
-        <input type="number" id="inputZ" step="any" value="0"><br><br>
-    </form>
-
-    <p id="errorMessage" style="color: red;"></p>
-    <p id="firstResult"></p>
-    <p id="secondResult"></p>
+    <div class="calculator-box">
+        <h1>RIVEN TO ENDO</h1>
+        <h1>CALCULATOR</h1>
+        <div class="form-group">
+            <label for="inputX">Mastery Rank</label>
+            <input type="number" id="inputX" step="any" min="8" max="16" value="0">
+        </div>
+        <div class="form-group">
+            <label for="inputY">Mod Rank</label>
+            <input type="number" id="inputY" step="any" min="0" max="8" value="0">
+        </div>
+        <div class="form-group">
+            <label for="inputZ">Reroll:</label>
+            <input type="number" id="inputZ" step="any" min="0" value="0">
+        </div>
+        <p id="errorMessage" class="error-message"></p>
+        <p id="firstResult"></p>
+        <p id="secondResult"></p>
+    </div>
 </body>
 </html>
